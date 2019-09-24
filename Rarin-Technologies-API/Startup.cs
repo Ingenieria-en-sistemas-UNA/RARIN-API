@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Rarin_Technologies_API.Contexts;
+using Rarin_Technologies_API.Models;
+using Rarin_Technologies_API.Services;
 
 namespace Rarin_Technologies_API
 {
@@ -26,8 +26,22 @@ namespace Rarin_Technologies_API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
+
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddScoped<HashService>();
+            services.AddDataProtection();
+
+            services.AddCors(Options=>
+            {
+                Options.AddPolicy("Permitir origenes especificos",
+                    builder => builder.WithOrigins("").WithMethods("GET,POST").WithHeaders("*"));
+            }
+            );
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<Contexts.ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddDbContext<Contexts.ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -46,7 +60,10 @@ namespace Rarin_Technologies_API
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseCors();
             app.UseMvc();
+
         }
     }
 }
