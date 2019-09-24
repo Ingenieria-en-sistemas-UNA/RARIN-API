@@ -9,9 +9,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Rarin_Technologies_API.Contexts;
+using Rarin_Technologies_API.Entities;
 using Rarin_Technologies_API.Models;
 
 namespace Rarin_Technologies_API.Controllers
@@ -22,34 +24,46 @@ namespace Rarin_Technologies_API.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
         public UsersController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this._roleManager = roleManager;
             _configuration = configuration;
             this._context = context;
+            this._mapper = mapper;
         }
 
         [HttpPost("signup")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Person = model.Person };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return Ok(new { ok = true, data = BuildToken(model) });
+                IdentityResult newUserRole = await _userManager.AddToRoleAsync(user, "Member");
+                if (newUserRole.Succeeded)
+                {
+                    return Ok(new { ok = true, data = await BuildToken(user) });
+                }
+
+                return BadRequest(new { ok = false, errors = newUserRole.Errors });
+
             }
-            else
-            {
-                return BadRequest(new { ok = false, errors = result.Errors });
-            }
+
+            return BadRequest(new { ok = false, errors = result.Errors });
+
 
         }
 
@@ -57,10 +71,10 @@ namespace Rarin_Technologies_API.Controllers
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
         {
             var result = await _signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
-            var user = _context.Users.SingleOrDefault(x => x.Email == userInfo.Email);
+            var user = _context.Users.Include(x => x.Person).SingleOrDefault(x => x.Email == userInfo.Email);
             if (result.Succeeded)
             {
-                return Ok(new { ok = true, data = BuildToken(userInfo) });
+                return Ok(new { ok = true, data = await BuildToken(user) });
             }
             else
             {
@@ -72,13 +86,9 @@ namespace Rarin_Technologies_API.Controllers
             }
         }
 
-        private UserToken BuildToken(UserInfo userInfo)
+        private async Task<UserToken> BuildToken(ApplicationUser user)
         {
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+            var claims = await GetValidClaims(user);
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -97,8 +107,37 @@ namespace Rarin_Technologies_API.Controllers
             return new UserToken()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
-                Expiration = expiration
+                Expiration = expiration,
+                Person = user.Person
             };
+        }
+        private async Task<List<Claim>> GetValidClaims(ApplicationUser user)
+        {
+            IdentityOptions _options = new IdentityOptions();
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(_options.ClaimsIdentity.UserIdClaimType, user.Id.ToString()),
+                new Claim(_options.ClaimsIdentity.UserNameClaimType, user.UserName),
+            };
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            claims.AddRange(userClaims);
+            foreach (var userRole in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+                var role = await _roleManager.FindByNameAsync(userRole);
+                if (role != null)
+                {
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+                    foreach (Claim roleClaim in roleClaims)
+                    {
+                        claims.Add(roleClaim);
+                    }
+                }
+            }
+            return claims;
         }
     }
 }

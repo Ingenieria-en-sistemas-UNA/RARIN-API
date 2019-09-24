@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Rarin_Technologies_API.Controllers
@@ -11,11 +12,8 @@ namespace Rarin_Technologies_API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly IDataProtector _protector;
-        public ValuesController(IDataProtectionProvider protectionProvider)
-        {
-            _protector = protectionProvider.CreateProtector("Valor unico y secreto");
-        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
