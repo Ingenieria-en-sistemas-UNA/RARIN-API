@@ -43,7 +43,7 @@ namespace Rarin_Technologies_API
 
             services.AddCors(Options =>
             {
-                Options.AddPolicy("Permitir origenes especificos",
+                Options.AddPolicy("AllowOrigin",
                     builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
