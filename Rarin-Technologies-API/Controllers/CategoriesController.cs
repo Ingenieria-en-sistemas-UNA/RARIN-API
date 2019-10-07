@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rarin_Technologies_API.Contexts;
 using Rarin_Technologies_API.Entities;
+using Rarin_Technologies_API.Models;
 
 namespace Rarin_Technologies_API.Controllers
 {
@@ -15,22 +17,25 @@ namespace Rarin_Technologies_API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            this._mapper = mapper;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<OutCategoryDTO>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            var categories = await _context.Categories.ToListAsync();
+            return _mapper.Map<List<OutCategoryDTO>>(categories);
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<OutCategoryDTO>> GetCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
 
@@ -39,13 +44,14 @@ namespace Rarin_Technologies_API.Controllers
                 return NotFound();
             }
 
-            return category;
+            return _mapper.Map<OutCategoryDTO>(category);
         }
 
         // PUT: api/Categories/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutCategory(int id, InCategoryDTO inCategoryDTO)
         {
+            var category = _mapper.Map<Category>(inCategoryDTO);
             if (id != category.Id)
             {
                 return BadRequest();
@@ -84,7 +90,7 @@ namespace Rarin_Technologies_API.Controllers
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Category>> DeleteCategory(int id)
+        public async Task<ActionResult<OutCategoryDTO>> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
@@ -95,7 +101,7 @@ namespace Rarin_Technologies_API.Controllers
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
-            return category;
+            return _mapper.Map<OutCategoryDTO>(category);
         }
 
         private bool CategoryExists(int id)
