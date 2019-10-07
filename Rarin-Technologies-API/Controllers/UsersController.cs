@@ -128,7 +128,7 @@ namespace Rarin_Technologies_API.Controllers
             claims.AddRange(userClaims);
             foreach (var userRole in userRoles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, userRole));
+                claims.Add(new Claim("role", userRole));
                 var role = await _roleManager.FindByNameAsync(userRole);
                 if (role != null)
                 {
