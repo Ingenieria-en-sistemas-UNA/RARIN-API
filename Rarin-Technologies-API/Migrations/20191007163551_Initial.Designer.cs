@@ -10,7 +10,7 @@ using Rarin_Technologies_API.Contexts;
 namespace Rarin_Technologies_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191007150354_Initial")]
+    [Migration("20191007163551_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

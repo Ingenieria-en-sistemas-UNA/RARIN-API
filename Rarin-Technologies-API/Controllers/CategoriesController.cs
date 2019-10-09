@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +16,9 @@ using Rarin_Technologies_API.Models;
 
 namespace Rarin_Technologies_API.Controllers
 {
+    [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [ApiController]
     public class CategoriesController : ControllerBase
     {
@@ -26,6 +32,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // GET: api/Categories
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OutCategoryDTO>>> GetCategories()
         {
