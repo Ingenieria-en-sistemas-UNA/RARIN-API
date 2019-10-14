@@ -13,6 +13,7 @@ namespace Rarin_Technologies_API.Entities
         public int Stock { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public string ImageUrl { set; get; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
     }

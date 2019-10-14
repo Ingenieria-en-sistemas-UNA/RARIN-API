@@ -224,6 +224,8 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
+                    b.Property<string>("ImageUrl");
+
                     b.Property<string>("Name");
 
                     b.Property<double>("Price");
