@@ -87,12 +87,13 @@ namespace Rarin_Technologies_API.Controllers
 
         // POST: api/Categories
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<OutCategoryDTO>> PostCategory(InCategoryDTO inCategoryDTO)
         {
+            var category = _mapper.Map<Category>(inCategoryDTO);
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetCategory", new { id = category.Id }, _mapper.Map<OutCategoryDTO>(category));
         }
 
         // DELETE: api/Categories/5
