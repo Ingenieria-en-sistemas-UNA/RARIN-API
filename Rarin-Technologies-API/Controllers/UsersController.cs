@@ -46,7 +46,7 @@ namespace Rarin_Technologies_API.Controllers
             this._context = context;
             this._mapper = mapper;
         }
-
+        [EnableCors("AllowOrigin")]
         [HttpPost("signup")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
@@ -69,6 +69,7 @@ namespace Rarin_Technologies_API.Controllers
 
         }
 
+        [EnableCors("AllowOrigin")]
         [HttpPost("login")]
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
         {
