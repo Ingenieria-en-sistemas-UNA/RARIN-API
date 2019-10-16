@@ -86,12 +86,13 @@ namespace Rarin_Technologies_API.Controllers
 
         // POST: api/Products
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<OutProductDTO>> PostProduct(InProductDTO inProductDTO)
         {
+            var product = _mapper.Map<Product>(inProductDTO);
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return CreatedAtAction("GetProduct", new { id = product.Id }, _mapper.Map<OutProductDTO>(product));
         }
 
         // DELETE: api/Products/5
