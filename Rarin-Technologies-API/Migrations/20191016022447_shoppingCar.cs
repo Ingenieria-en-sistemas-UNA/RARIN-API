@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Rarin_Technologies_API.Migrations
 {
-    public partial class Initial : Migration
+    public partial class shoppingCar : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,8 +40,7 @@ namespace Rarin_Technologies_API.Migrations
                 name: "People",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true)
                 },
@@ -72,30 +71,6 @@ namespace Rarin_Technologies_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false),
-                    Stock = table.Column<int>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -121,6 +96,26 @@ namespace Rarin_Technologies_API.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AspNetUsers_People_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "People",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCar",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ProductId = table.Column<int>(nullable: false),
+                    PersonId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCar", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCar_People_PersonId",
                         column: x => x.PersonId,
                         principalTable: "People",
                         principalColumn: "Id",
@@ -212,6 +207,38 @@ namespace Rarin_Technologies_API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<double>(nullable: false),
+                    Stock = table.Column<int>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<int>(nullable: false),
+                    ShoppingCarId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Category_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_ShoppingCar_ShoppingCarId",
+                        column: x => x.ShoppingCarId,
+                        principalTable: "ShoppingCar",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -260,6 +287,17 @@ namespace Rarin_Technologies_API.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_ShoppingCarId",
+                table: "Products",
+                column: "ShoppingCarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCar_PersonId",
+                table: "ShoppingCar",
+                column: "PersonId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -290,6 +328,9 @@ namespace Rarin_Technologies_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Category");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCar");
 
             migrationBuilder.DropTable(
                 name: "People");

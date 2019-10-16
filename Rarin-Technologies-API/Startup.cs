@@ -127,7 +127,7 @@ namespace Rarin_Technologies_API
                     }
                 };
 
-                Task<IdentityResult> newUser = userManager.CreateAsync(administrator, "_AStrongP@ssword!");
+                Task<IdentityResult> newUser = userManager.CreateAsync(administrator, "123456789");
                 newUser.Wait();
 
                 if (newUser.Result.Succeeded)

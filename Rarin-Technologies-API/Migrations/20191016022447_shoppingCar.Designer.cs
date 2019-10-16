@@ -10,8 +10,8 @@ using Rarin_Technologies_API.Contexts;
 namespace Rarin_Technologies_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191007163551_Initial")]
-    partial class Initial
+    [Migration("20191016022447_shoppingCar")]
+    partial class shoppingCar
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -203,9 +203,7 @@ namespace Rarin_Technologies_API.Migrations
 
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Person", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id");
 
                     b.Property<string>("LastName");
 
@@ -226,9 +224,13 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
+                    b.Property<string>("ImageUrl");
+
                     b.Property<string>("Name");
 
                     b.Property<double>("Price");
+
+                    b.Property<int?>("ShoppingCarId");
 
                     b.Property<int>("Stock");
 
@@ -238,7 +240,27 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ShoppingCarId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.ShoppingCar", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PersonId");
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId")
+                        .IsUnique();
+
+                    b.ToTable("ShoppingCar");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -299,6 +321,18 @@ namespace Rarin_Technologies_API.Migrations
                     b.HasOne("Rarin_Technologies_API.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar", "ShoppingCar")
+                        .WithMany("Products")
+                        .HasForeignKey("ShoppingCarId");
+                });
+
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.ShoppingCar", b =>
+                {
+                    b.HasOne("Rarin_Technologies_API.Entities.Person", "Person")
+                        .WithOne("ShoppingCar")
+                        .HasForeignKey("Rarin_Technologies_API.Entities.ShoppingCar", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
