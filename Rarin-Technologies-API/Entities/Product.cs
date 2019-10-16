@@ -16,6 +16,7 @@ namespace Rarin_Technologies_API.Entities
         public string ImageUrl { set; get; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        public ShoppingCar ShoppingCar { set; get; }
     }
 }
     

@@ -201,9 +201,7 @@ namespace Rarin_Technologies_API.Migrations
 
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Person", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id");
 
                     b.Property<string>("LastName");
 
@@ -230,6 +228,8 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.Property<double>("Price");
 
+                    b.Property<int?>("ShoppingCarId");
+
                     b.Property<int>("Stock");
 
                     b.Property<DateTime>("UpdatedAt");
@@ -238,7 +238,27 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ShoppingCarId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.ShoppingCar", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PersonId");
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId")
+                        .IsUnique();
+
+                    b.ToTable("ShoppingCar");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -299,6 +319,18 @@ namespace Rarin_Technologies_API.Migrations
                     b.HasOne("Rarin_Technologies_API.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar", "ShoppingCar")
+                        .WithMany("Products")
+                        .HasForeignKey("ShoppingCarId");
+                });
+
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.ShoppingCar", b =>
+                {
+                    b.HasOne("Rarin_Technologies_API.Entities.Person", "Person")
+                        .WithOne("ShoppingCar")
+                        .HasForeignKey("Rarin_Technologies_API.Entities.ShoppingCar", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

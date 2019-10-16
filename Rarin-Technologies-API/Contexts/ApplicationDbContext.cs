@@ -20,5 +20,6 @@ namespace Rarin_Technologies_API.Contexts
         public DbSet<Product> Products { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Rarin_Technologies_API.Entities.Category> Category { get; set; }
+        public DbSet<Rarin_Technologies_API.Entities.ShoppingCar> ShoppingCar { get; set; }
     }
 }
