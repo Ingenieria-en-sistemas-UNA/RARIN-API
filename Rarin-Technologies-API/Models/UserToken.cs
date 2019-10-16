@@ -10,7 +10,7 @@ namespace Rarin_Technologies_API.Models
     {
         public string Token { set; get; }
         public DateTime Expiration { set; get; }
-        public Person Person { get; set; }
+        public Client Client { get; set; }
 
     }
 }

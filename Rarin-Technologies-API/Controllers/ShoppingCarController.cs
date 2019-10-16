@@ -36,7 +36,7 @@ namespace Rarin_Technologies_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OutShoppingCarDTO>>> GetShoppingCar()
         {
-            var shoppingCar = await _context.ShoppingCar.ToListAsync();
+            var shoppingCar = await _context.ShoppingCars.ToListAsync();
             return _mapper.Map<List<OutShoppingCarDTO>>(shoppingCar);
         }
 
@@ -44,7 +44,7 @@ namespace Rarin_Technologies_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OutShoppingCarDTO>> GetShoppingCar(int id)
         {
-            var shoppingCar = await _context.ShoppingCar.FindAsync(id);
+            var shoppingCar = await _context.ShoppingCars.FindAsync(id);
 
             if (shoppingCar == null)
             {
@@ -90,7 +90,7 @@ namespace Rarin_Technologies_API.Controllers
         public async Task<ActionResult<OutShoppingCarDTO>> PostShoppingCar(InShoppingCarDTO inShoppingCarDTO)
         {
             var shoppingCar = _mapper.Map<ShoppingCar>(inShoppingCarDTO);
-            _context.ShoppingCar.Add(shoppingCar);
+            _context.ShoppingCars.Add(shoppingCar);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetShoppingCar", new { id = shoppingCar.Id }, _mapper.Map<OutShoppingCarDTO>(shoppingCar));
@@ -100,13 +100,13 @@ namespace Rarin_Technologies_API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<OutShoppingCarDTO>> DeleteShoppingCar(int id)
         {
-            var shoppingCar = await _context.ShoppingCar.FindAsync(id);
+            var shoppingCar = await _context.ShoppingCars.FindAsync(id);
             if (shoppingCar == null)
             {
                 return NotFound();
             }
 
-            _context.ShoppingCar.Remove(shoppingCar);
+            _context.ShoppingCars.Remove(shoppingCar);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<OutShoppingCarDTO>(shoppingCar);
@@ -114,7 +114,7 @@ namespace Rarin_Technologies_API.Controllers
 
         private bool ShoppingCarExists(int id)
         {
-            return _context.ShoppingCar.Any(e => e.Id == id);
+            return _context.ShoppingCars.Any(e => e.Id == id);
         }
     }
 }

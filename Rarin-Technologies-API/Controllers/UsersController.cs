@@ -50,7 +50,7 @@ namespace Rarin_Technologies_API.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Person = model.Person };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Client = model.Client };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -74,7 +74,7 @@ namespace Rarin_Technologies_API.Controllers
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
         {
             var result = await _signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
-            var user = _context.Users.Include(x => x.Person).SingleOrDefault(x => x.Email == userInfo.Email);
+            var user = _context.Users.Include(x => x.Client).SingleOrDefault(x => x.Email == userInfo.Email);
             if (result.Succeeded)
             {
                 return Ok(new { ok = true, data = await BuildToken(user) });
@@ -111,7 +111,7 @@ namespace Rarin_Technologies_API.Controllers
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration,
-                Person = user.Person
+                Client = user.Client
             };
         }
         private async Task<List<Claim>> GetValidClaims(ApplicationUser user)

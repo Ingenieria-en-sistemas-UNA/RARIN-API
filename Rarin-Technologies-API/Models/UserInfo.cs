@@ -10,8 +10,7 @@ namespace Rarin_Technologies_API.Models
     {
         public string Email { set; get; }
         public string Password { get; set; }
-        public int PersonId { get; set; }
-        public Person Person { get; set; }
+        public Client Client { get; set; }
 
     }
 }

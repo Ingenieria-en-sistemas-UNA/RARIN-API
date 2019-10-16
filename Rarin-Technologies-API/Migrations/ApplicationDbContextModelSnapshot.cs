@@ -15,7 +15,7 @@ namespace Rarin_Technologies_API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -136,6 +136,8 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<int>("ClientId");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -156,8 +158,6 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.Property<string>("PasswordHash");
 
-                    b.Property<int>("PersonId");
-
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
@@ -171,6 +171,8 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -178,8 +180,6 @@ namespace Rarin_Technologies_API.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PersonId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -196,18 +196,43 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PersonId");
+
+                    b.Property<string>("PersonId1");
+
+                    b.Property<int>("ShoppingCarId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId1");
+
+                    b.HasIndex("ShoppingCarId");
+
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Person", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<string>("Id");
 
                     b.Property<string>("LastName");
 
                     b.Property<string>("Name");
 
+                    b.Property<int?>("ShoppingCarId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShoppingCarId");
 
                     b.ToTable("People");
                 });
@@ -234,11 +259,15 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.Property<DateTime>("UpdatedAt");
 
+                    b.Property<int?>("VoucherId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ShoppingCarId");
+
+                    b.HasIndex("VoucherId");
 
                     b.ToTable("Products");
                 });
@@ -249,16 +278,26 @@ namespace Rarin_Technologies_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("PersonId");
+                    b.HasKey("Id");
 
-                    b.Property<int>("ProductId");
+                    b.ToTable("ShoppingCars");
+                });
+
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.Voucher", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClientId");
+
+                    b.Property<string>("Detail");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId")
-                        .IsUnique();
+                    b.HasIndex("ClientId");
 
-                    b.ToTable("ShoppingCar");
+                    b.ToTable("Vouchers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -308,10 +347,29 @@ namespace Rarin_Technologies_API.Migrations
 
             modelBuilder.Entity("Rarin_Technologies_API.Entities.ApplicationUser", b =>
                 {
+                    b.HasOne("Rarin_Technologies_API.Entities.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.Client", b =>
+                {
                     b.HasOne("Rarin_Technologies_API.Entities.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId")
+                        .HasForeignKey("PersonId1");
+
+                    b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar", "ShoppingCar")
+                        .WithMany()
+                        .HasForeignKey("ShoppingCarId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.Person", b =>
+                {
+                    b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar", "ShoppingCar")
+                        .WithMany()
+                        .HasForeignKey("ShoppingCarId");
                 });
 
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Product", b =>
@@ -321,16 +379,20 @@ namespace Rarin_Technologies_API.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar", "ShoppingCar")
+                    b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar")
                         .WithMany("Products")
                         .HasForeignKey("ShoppingCarId");
+
+                    b.HasOne("Rarin_Technologies_API.Entities.Voucher")
+                        .WithMany("Products")
+                        .HasForeignKey("VoucherId");
                 });
 
-            modelBuilder.Entity("Rarin_Technologies_API.Entities.ShoppingCar", b =>
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.Voucher", b =>
                 {
-                    b.HasOne("Rarin_Technologies_API.Entities.Person", "Person")
-                        .WithOne("ShoppingCar")
-                        .HasForeignKey("Rarin_Technologies_API.Entities.ShoppingCar", "PersonId")
+                    b.HasOne("Rarin_Technologies_API.Entities.Client")
+                        .WithMany("Vouchers")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

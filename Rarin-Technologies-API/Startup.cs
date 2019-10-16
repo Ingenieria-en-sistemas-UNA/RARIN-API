@@ -120,10 +120,13 @@ namespace Rarin_Technologies_API
                 {
                     Email = email,
                     UserName = email,
-                    Person = new Person
+                    Client = new Client
                     {
-                        Name = "Rarin",
-                        LastName = "Administrator"
+                        Person = new Person
+                        {
+                            Name = "Rarin",
+                            LastName = "Administrator"
+                        },
                     }
                 };
 
