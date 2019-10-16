@@ -14,7 +14,5 @@ namespace Rarin_Technologies_API.Entities
         public string Id { get; set; }     
         public string Name { get; set; }
         public string LastName { get; set; }
-        public ShoppingCar ShoppingCar { set; get; }
-
     }
 }

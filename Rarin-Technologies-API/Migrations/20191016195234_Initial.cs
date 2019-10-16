@@ -37,6 +37,19 @@ namespace Rarin_Technologies_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "People",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_People", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShoppingCars",
                 columns: table => new
                 {
@@ -67,26 +80,6 @@ namespace Rarin_Technologies_API.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "People",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    ShoppingCarId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_People", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_People_ShoppingCars_ShoppingCarId",
-                        column: x => x.ShoppingCarId,
-                        principalTable: "ShoppingCars",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -344,11 +337,6 @@ namespace Rarin_Technologies_API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_ShoppingCarId",
                 table: "Clients",
-                column: "ShoppingCarId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_People_ShoppingCarId",
-                table: "People",
                 column: "ShoppingCarId");
 
             migrationBuilder.CreateIndex(

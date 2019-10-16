@@ -10,7 +10,7 @@ using Rarin_Technologies_API.Contexts;
 namespace Rarin_Technologies_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191016191653_Initial")]
+    [Migration("20191016195234_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,11 +230,7 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("ShoppingCarId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ShoppingCarId");
 
                     b.ToTable("People");
                 });
@@ -365,13 +361,6 @@ namespace Rarin_Technologies_API.Migrations
                         .WithMany()
                         .HasForeignKey("ShoppingCarId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Rarin_Technologies_API.Entities.Person", b =>
-                {
-                    b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar", "ShoppingCar")
-                        .WithMany()
-                        .HasForeignKey("ShoppingCarId");
                 });
 
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Product", b =>
