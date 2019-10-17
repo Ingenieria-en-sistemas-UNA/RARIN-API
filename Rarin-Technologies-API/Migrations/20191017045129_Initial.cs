@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Rarin_Technologies_API.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,9 +40,7 @@ namespace Rarin_Technologies_API.Migrations
                 name: "People",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Dni = table.Column<string>(nullable: true),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true)
                 },
@@ -90,7 +88,7 @@ namespace Rarin_Technologies_API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PersonId = table.Column<int>(nullable: false),
+                    PersonId = table.Column<string>(nullable: true),
                     ShoppingCarId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -101,7 +99,7 @@ namespace Rarin_Technologies_API.Migrations
                         column: x => x.PersonId,
                         principalTable: "People",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Clients_ShoppingCars_ShoppingCarId",
                         column: x => x.ShoppingCarId,

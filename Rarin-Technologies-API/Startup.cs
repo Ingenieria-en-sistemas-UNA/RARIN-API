@@ -39,19 +39,9 @@ namespace Rarin_Technologies_API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Core API", Description = "Swagger Core API" });
-
-
-
-               
+                c.SwaggerDoc("v1", new Info { Title = "Rarin technologies API", Description = "Api rest para el consumo de servicios de una tienda online de partes de computadoras", Version = "v1" });
             }
            );
-            /////////////
-            //services.AddSwaggerGen(c =>
-            //{
-             ///   c.IncludeXmlComments(filePath);
-           // });
-            ///////////////////////
                 services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 10;
@@ -113,8 +103,10 @@ namespace Rarin_Technologies_API
             app.UseMvc();
             //
             app.UseSwagger();
-            app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Core API");
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My service");
+                c.RoutePrefix = string.Empty;  // Set Swagger UI at apps root
             });
             //
             CreateRoles(serviceProvider);
@@ -157,10 +149,11 @@ namespace Rarin_Technologies_API
                     {
                         Person = new Person
                         {
-                            Dni = "000000000",
+                            Id = "000000000",
                             Name = "Rarin",
                             LastName = "Administrator"
                         },
+                        PersonId = "000000000",
                         ShoppingCar = new ShoppingCar
                         {
                             Products = new List<Product>()

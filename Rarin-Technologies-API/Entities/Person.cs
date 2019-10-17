@@ -9,8 +9,9 @@ namespace Rarin_Technologies_API.Entities
 {
     public class Person
     {
-        public int Id { get; set; }
-        public string Dni { get; set; }     
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
     }

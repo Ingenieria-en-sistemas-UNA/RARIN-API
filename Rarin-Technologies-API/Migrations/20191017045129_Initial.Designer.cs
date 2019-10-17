@@ -10,14 +10,14 @@ using Rarin_Technologies_API.Contexts;
 namespace Rarin_Technologies_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191017002613_initial")]
-    partial class initial
+    [Migration("20191017045129_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -207,7 +207,7 @@ namespace Rarin_Technologies_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("PersonId");
+                    b.Property<string>("PersonId");
 
                     b.Property<int>("ShoppingCarId");
 
@@ -222,11 +222,7 @@ namespace Rarin_Technologies_API.Migrations
 
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Person", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Dni");
+                    b.Property<string>("Id");
 
                     b.Property<string>("LastName");
 
@@ -357,8 +353,7 @@ namespace Rarin_Technologies_API.Migrations
                 {
                     b.HasOne("Rarin_Technologies_API.Entities.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PersonId");
 
                     b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar", "ShoppingCar")
                         .WithMany()
