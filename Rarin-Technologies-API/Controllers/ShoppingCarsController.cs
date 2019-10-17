@@ -20,12 +20,12 @@ namespace Rarin_Technologies_API.Controllers
     [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [ApiController]
-    public class ShoppingCarController : ControllerBase
+    public class ShoppingCarsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public ShoppingCarController(ApplicationDbContext context, IMapper mapper)
+        public ShoppingCarsController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             this._mapper = mapper;

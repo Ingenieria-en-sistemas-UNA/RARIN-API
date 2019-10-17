@@ -13,4 +13,5 @@ namespace Rarin_Technologies_API.Models
         public int CategoryId { get; set; }
         public string ImageUrl { set; get; }
     }
+
 }

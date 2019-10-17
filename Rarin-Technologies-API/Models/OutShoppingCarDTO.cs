@@ -8,7 +8,6 @@ namespace Rarin_Technologies_API.Models
 {
     public class OutShoppingCarDTO
     {
-        public int ProductId { set; get; }
         public List<OutProductDTO> Products { set; get; }
     }
 }

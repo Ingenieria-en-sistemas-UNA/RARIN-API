@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Rarin_Technologies_API.Models
 {
-    public class UserToken
+    public class InVoucherDTO
     {
-        public string Token { set; get; }
-        public DateTime Expiration { set; get; }
-        public OutClientDTO Client { get; set; }
-
+        public List<InProductDTO> Products { get; set; }
+        public int ClientId { get; set; }
+        public string Detail { get; set; }
     }
 }

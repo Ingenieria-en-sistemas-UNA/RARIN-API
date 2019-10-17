@@ -10,6 +10,7 @@ namespace Rarin_Technologies_API.Entities
         public int Id { get; set; }
         public List<Product> Products { get; set; }
         public int ClientId { get; set; }
+        public Client Client { set; get; }
         public string Detail { get; set; }
 
     }

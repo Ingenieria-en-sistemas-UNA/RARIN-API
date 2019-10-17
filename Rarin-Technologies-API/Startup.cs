@@ -157,13 +157,19 @@ namespace Rarin_Technologies_API
                     {
                         Person = new Person
                         {
+                            Dni = "000000000",
                             Name = "Rarin",
                             LastName = "Administrator"
                         },
+                        ShoppingCar = new ShoppingCar
+                        {
+                            Products = new List<Product>()
+                        },
+                        Vouchers = new List<Voucher>()
                     }
                 };
 
-                Task<IdentityResult> newUser = userManager.CreateAsync(administrator, "123456789");
+                Task<IdentityResult> newUser = userManager.CreateAsync(administrator, "admin123456789");
                 newUser.Wait();
 
                 if (newUser.Result.Succeeded)

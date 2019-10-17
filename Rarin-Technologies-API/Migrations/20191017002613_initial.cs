@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Rarin_Technologies_API.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,9 @@ namespace Rarin_Technologies_API.Migrations
                 name: "People",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Dni = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true)
                 },
@@ -89,18 +91,17 @@ namespace Rarin_Technologies_API.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     PersonId = table.Column<int>(nullable: false),
-                    PersonId1 = table.Column<string>(nullable: true),
                     ShoppingCarId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Clients_People_PersonId1",
-                        column: x => x.PersonId1,
+                        name: "FK_Clients_People_PersonId",
+                        column: x => x.PersonId,
                         principalTable: "People",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Clients_ShoppingCars_ShoppingCarId",
                         column: x => x.ShoppingCarId,
@@ -330,9 +331,9 @@ namespace Rarin_Technologies_API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clients_PersonId1",
+                name: "IX_Clients_PersonId",
                 table: "Clients",
-                column: "PersonId1");
+                column: "PersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_ShoppingCarId",

@@ -14,10 +14,18 @@ namespace Rarin_Technologies_API.Mapping
         {
             CreateMap<InProductDTO, Product>();
             CreateMap<InCategoryDTO, Category>();
-        
+            CreateMap<InVoucherDTO, Voucher>();
+            CreateMap<InShoppingCarDTO, ShoppingCar>();
+            CreateMap<InClientDTO, Client>();
+            CreateMap<InVoucherDTO, Voucher>();
+
             CreateMap<OutCategoryDTO, Category>();
             CreateMap<OutProductDTO, Product>();
-          
+            CreateMap<OutVoucherDTO,Voucher>();
+            CreateMap<OutShoppingCarDTO, ShoppingCar>();
+            CreateMap<OutClientDTO, Client>();
+            CreateMap<OutVoucherDTO, Voucher>();
+
         }
     }
 }
