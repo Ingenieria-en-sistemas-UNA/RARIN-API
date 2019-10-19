@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 using AutoMapper;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +19,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Rarin_Technologies_API.Abstraction;
 using Rarin_Technologies_API.Entities;
+using RazorLight;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Rarin_Technologies_API
@@ -77,6 +82,28 @@ namespace Rarin_Technologies_API
                         ClockSkew = TimeSpan.Zero
                     });
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+            services.AddScoped<IRazorLightEngine>(sp =>
+            {
+                var engine = new RazorLightEngineBuilder()
+                    .UseFilesystemProject(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))
+                    .UseMemoryCachingProvider()
+                    .Build();
+                return engine;
+            });
+
+
+            var processSuffix = "32bit";
+            if (Environment.Is64BitProcess && IntPtr.Size == 8)
+            {
+                processSuffix = "64bit";
+            }
+            var context = new CustomAssemblyLoadContext();
+            context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), $"PDFNative\\{processSuffix}\\libwkhtmltox.dll"));
+
+            services.AddScoped<IPDFService, PDFService>();
         }
 
         private XPathDocument filePath()
