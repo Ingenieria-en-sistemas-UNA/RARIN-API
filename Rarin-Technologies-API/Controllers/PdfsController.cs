@@ -12,18 +12,55 @@ namespace Rarin_Technologies_API.Controllers
     [ApiController]
     public class PdfsController : ControllerBase
     {
-        private readonly IPDFService _pdfService;
+        private readonly IReportService _reportService;
 
-        public PdfsController(IPDFService pdfService)
+        public PdfsController(IReportService reportService)
         {
-            _pdfService = pdfService;
+            _reportService = reportService;
         }
 
         [HttpGet("Create")]
         public async Task<IActionResult> CreatePdf()
         {
-            var file = await _pdfService.Create();
+            var file = await _reportService.CreateCategoryReport();
+            return File(file, "application/pdf");
+
+        
+        }
+        [HttpGet("Product")]/**/
+        public async Task<IActionResult> pdfProduct()
+        {
+            var file = await _reportService.CreateProductReport();
+            return File(file, "application/pdf");
+        }
+
+
+        [HttpGet("Client")]
+        public async Task<IActionResult> pdfClient()
+        {
+            var file = await _reportService.CreateClienteReport();
+            return File(file, "application/pdf");
+        }
+
+        [HttpGet("Shopping")]/**/
+        public async Task<IActionResult> pdfShoppingCar()
+        {
+            var file = await _reportService.CreateShoppingCarReport();
+            return File(file, "application/pdf");
+        }
+
+        [HttpGet("User")]/**/
+        public async Task<IActionResult> pdfUsers()
+        {
+            var file = await _reportService.CreateUsersReport();
+            return File(file, "application/pdf");
+        }
+        [HttpGet("Voucher")]
+        public async Task<IActionResult> pdfVoucher()
+        {
+            var file = await _reportService.CreateVoucherReport();
             return File(file, "application/pdf");
         }
     }
+
 }
