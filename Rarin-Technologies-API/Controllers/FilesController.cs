@@ -4,18 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Rarin_Technologies_API.Controllers
 {
+    [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class FilesController : ControllerBase
     {
-
+        [EnableCors("AllowOrigin")]
         [HttpPost]
-        public async Task<ActionResult<Object>> upload([FromForm(Name = "file")] IFormFile file)
+        public ActionResult<Object> upload([FromForm(Name = "file")] IFormFile file)
         {
             if(file == null || file.Length == 0)
             {
