@@ -218,6 +218,27 @@ namespace Rarin_Technologies_API.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Cant");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int?>("VoucherId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("VoucherId");
+
+                    b.ToTable("Items");
+                });
+
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Person", b =>
                 {
                     b.Property<string>("Id");
@@ -249,19 +270,13 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.Property<int?>("ShoppingCarId");
 
-                    b.Property<int>("Stock");
-
                     b.Property<DateTime>("UpdatedAt");
-
-                    b.Property<int?>("VoucherId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ShoppingCarId");
-
-                    b.HasIndex("VoucherId");
 
                     b.ToTable("Products");
                 });
@@ -359,6 +374,18 @@ namespace Rarin_Technologies_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Rarin_Technologies_API.Entities.Item", b =>
+                {
+                    b.HasOne("Rarin_Technologies_API.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Rarin_Technologies_API.Entities.Voucher")
+                        .WithMany("Items")
+                        .HasForeignKey("VoucherId");
+                });
+
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Product", b =>
                 {
                     b.HasOne("Rarin_Technologies_API.Entities.Category", "Category")
@@ -369,10 +396,6 @@ namespace Rarin_Technologies_API.Migrations
                     b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar")
                         .WithMany("Products")
                         .HasForeignKey("ShoppingCarId");
-
-                    b.HasOne("Rarin_Technologies_API.Entities.Voucher")
-                        .WithMany("Products")
-                        .HasForeignKey("VoucherId");
                 });
 
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Voucher", b =>

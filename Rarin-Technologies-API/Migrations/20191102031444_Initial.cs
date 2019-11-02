@@ -109,6 +109,37 @@ namespace Rarin_Technologies_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Price = table.Column<double>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<int>(nullable: false),
+                    ShoppingCarId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_ShoppingCars_ShoppingCarId",
+                        column: x => x.ShoppingCarId,
+                        principalTable: "ShoppingCars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -246,38 +277,26 @@ namespace Rarin_Technologies_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Items",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false),
-                    Stock = table.Column<int>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
-                    ImageUrl = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: false),
-                    ShoppingCarId = table.Column<int>(nullable: true),
+                    ProductId = table.Column<int>(nullable: false),
+                    Cant = table.Column<int>(nullable: false),
                     VoucherId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        name: "FK_Items_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Products_ShoppingCars_ShoppingCarId",
-                        column: x => x.ShoppingCarId,
-                        principalTable: "ShoppingCars",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Products_Vouchers_VoucherId",
+                        name: "FK_Items_Vouchers_VoucherId",
                         column: x => x.VoucherId,
                         principalTable: "Vouchers",
                         principalColumn: "Id",
@@ -339,6 +358,16 @@ namespace Rarin_Technologies_API.Migrations
                 column: "ShoppingCarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Items_ProductId",
+                table: "Items",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_VoucherId",
+                table: "Items",
+                column: "VoucherId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
@@ -347,11 +376,6 @@ namespace Rarin_Technologies_API.Migrations
                 name: "IX_Products_ShoppingCarId",
                 table: "Products",
                 column: "ShoppingCarId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_VoucherId",
-                table: "Products",
-                column: "VoucherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vouchers_ClientId",
@@ -377,7 +401,7 @@ namespace Rarin_Technologies_API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Items");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -386,10 +410,13 @@ namespace Rarin_Technologies_API.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Vouchers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Clients");

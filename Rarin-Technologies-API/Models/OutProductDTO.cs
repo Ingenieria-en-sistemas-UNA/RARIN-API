@@ -10,7 +10,6 @@ namespace Rarin_Technologies_API.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
-        public int Stock { get; set; }
         public string ImageUrl { set; get; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

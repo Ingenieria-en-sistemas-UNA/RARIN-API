@@ -22,5 +22,6 @@ namespace Rarin_Technologies_API.Contexts
         public DbSet<ShoppingCar> ShoppingCars { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<Item> Items { get; set; }
     }
 }
