@@ -18,6 +18,7 @@ namespace Rarin_Technologies_API.Mapping
             CreateMap <ShoppingCar, InShoppingCarDTO>();
             CreateMap<Client, InClientDTO>();
             CreateMap<Voucher, InVoucherDTO>();
+            CreateMap<Item, InItemDTO>();
 
             CreateMap<Category, OutCategoryDTO>();
             CreateMap<Product, OutProductDTO>();
@@ -25,6 +26,7 @@ namespace Rarin_Technologies_API.Mapping
             CreateMap<ShoppingCar, OutShoppingCarDTO>();
             CreateMap<Client, OutClientDTO>();
             CreateMap<Voucher, OutVoucherDTO>();
+            CreateMap<Item, OutItemDTO>();
         }
     }
 }
