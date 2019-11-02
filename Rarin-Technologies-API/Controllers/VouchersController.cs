@@ -19,7 +19,6 @@ namespace Rarin_Technologies_API.Controllers
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class VouchersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -32,7 +31,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // GET: api/Vouchers
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OutVoucherDTO>>> GetVouchers()
         {
@@ -42,6 +41,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // GET: api/Vouchers/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet("{id}")]
         public async Task<ActionResult<OutVoucherDTO>> GetVoucher(int id)
         {
@@ -56,6 +56,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // PUT: api/Vouchers/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVoucher(int id, InVoucherDTO inVoucherDTO)
         {
@@ -90,6 +91,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // POST: api/Vouchers
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<OutVoucherDTO>> PostVoucher(InVoucherDTO invoucherDTO)
         {
@@ -101,6 +103,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // DELETE: api/Vouchers/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<OutVoucherDTO>> DeleteVoucher(int id)
         {

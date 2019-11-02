@@ -13,6 +13,6 @@ namespace Rarin_Technologies_API.Models
         public string ImageUrl { set; get; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public OutCategoryDTO Category { get; set; }
+        public int CategoryId { get; set; }
     }
 }
