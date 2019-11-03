@@ -12,6 +12,7 @@ namespace Rarin_Technologies_API.Entities
         public int ClientId { get; set; }
         public Client Client { set; get; }
         public string Detail { get; set; }
+        public DateTime CreatedAt { get; set; }
 
     }
 }

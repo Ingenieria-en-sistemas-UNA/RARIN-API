@@ -300,6 +300,8 @@ namespace Rarin_Technologies_API.Migrations
 
                     b.Property<int>("ClientId");
 
+                    b.Property<DateTime>("CreatedAt");
+
                     b.Property<string>("Detail");
 
                     b.HasKey("Id");

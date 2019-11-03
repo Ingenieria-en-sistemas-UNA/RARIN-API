@@ -61,6 +61,7 @@ namespace Rarin_Technologies_API.Controllers
         {
             var product = _mapper.Map<Product>(outProductDTO);
             product.Category = await _context.Categories.FindAsync(product.CategoryId);
+            product.UpdatedAt = DateTime.Now;
             if (id != product.Id)
             {
                 return BadRequest();
@@ -93,6 +94,8 @@ namespace Rarin_Technologies_API.Controllers
         public async Task<ActionResult<OutProductDTO>> PostProduct(InProductDTO inProductDTO)
         {
             var product = _mapper.Map<Product>(inProductDTO);
+            product.CreatedAt = DateTime.Now;
+            product.UpdatedAt = DateTime.Now;
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 

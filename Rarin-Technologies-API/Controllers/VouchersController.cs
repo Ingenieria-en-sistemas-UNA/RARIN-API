@@ -93,9 +93,10 @@ namespace Rarin_Technologies_API.Controllers
         // POST: api/Vouchers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<OutVoucherDTO>> PostVoucher(InVoucherDTO invoucherDTO)
+        public async Task<ActionResult<OutVoucherDTO>> PostVoucher(InVoucherDTO inVoucherDTO)
         {
-            var voucher = _mapper.Map<Voucher>(invoucherDTO);
+            var voucher = _mapper.Map<Voucher>(inVoucherDTO);
+            voucher.CreatedAt= DateTime.Now;
             _context.Vouchers.Add(voucher);
             await _context.SaveChangesAsync();
 
