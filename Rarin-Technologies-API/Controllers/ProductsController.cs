@@ -38,8 +38,9 @@ namespace Rarin_Technologies_API.Controllers
             var products = await _context.Products.Include(x => x.Category).ToListAsync();
             return _mapper.Map<List<OutProductDTO>>(products);
         }
-        [HttpGet("{dateOne},{dateTwo}")]
-      
+
+        /*
+       [HttpGet("{dateOne}/{dateTwo}")]
         public IEnumerable<OutProductDTO> Filter(DateTime dateOne, DateTime dateTwo)
         {
             var product = _context.Products.Where(
@@ -48,6 +49,28 @@ namespace Rarin_Technologies_API.Controllers
 
             return _mapper.Map<List<OutProductDTO>>(product);
         }
+        */
+        [Route("FilterById")]
+        [HttpGet("{id}")]
+        public IEnumerable<OutProductDTO> FilterById(int id)
+        {
+            var products = _context.Products.Where(
+                 x => x.CategoryId == id)
+                 .ToList();
+
+            return _mapper.Map<List<OutProductDTO>>(products);
+        }
+
+        [Route("FilterByName")]
+        [HttpGet("{text}")]
+        public IEnumerable<OutProductDTO> FilterByName(string text)
+        {
+            var products = _context.Products
+              .Where(x => x.Name.StartsWith(text))
+                .ToList();
+            return _mapper.Map<List<OutProductDTO>>(products);
+        }
+      
 
         // GET: api/Products/5
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
@@ -63,6 +86,7 @@ namespace Rarin_Technologies_API.Controllers
 
             return _mapper.Map<OutProductDTO>(product);
         }
+       
 
         // PUT: api/Products/5
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]

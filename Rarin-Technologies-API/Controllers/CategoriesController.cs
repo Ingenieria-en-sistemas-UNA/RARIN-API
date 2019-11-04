@@ -38,7 +38,7 @@ namespace Rarin_Technologies_API.Controllers
             var categories = await _context.Categories.ToListAsync();
             return _mapper.Map<List<OutCategoryDTO>>(categories);
         }
-
+     
         // GET: api/Categories/5
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet("{id}")]
