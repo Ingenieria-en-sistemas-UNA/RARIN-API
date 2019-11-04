@@ -17,8 +17,7 @@ using Rarin_Technologies_API.Models;
 namespace Rarin_Technologies_API.Controllers
 {
     [EnableCors("AllowOrigin")]
-    [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+    [Route("api/[controller]")] 
     [ApiController]
     public class CategoriesController : ControllerBase
     {
@@ -32,7 +31,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // GET: api/Categories
-        
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OutCategoryDTO>>> GetCategories()
         {
@@ -41,6 +40,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // GET: api/Categories/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet("{id}")]
         public async Task<ActionResult<OutCategoryDTO>> GetCategory(int id)
         {
@@ -55,6 +55,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // PUT: api/Categories/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, InCategoryDTO inCategoryDTO)
         {
@@ -86,6 +87,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // POST: api/Categories
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<OutCategoryDTO>> PostCategory(InCategoryDTO inCategoryDTO)
         {
@@ -97,6 +99,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // DELETE: api/Categories/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<OutCategoryDTO>> DeleteCategory(int id)
         {

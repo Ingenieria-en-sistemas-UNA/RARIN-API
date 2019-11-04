@@ -31,15 +31,26 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // GET: api/Products
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OutProductDTO>>> GetProducts()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products.Include(x => x.Category).ToListAsync();
             return _mapper.Map<List<OutProductDTO>>(products);
+        }
+        [HttpGet("{dateOne},{dateTwo}")]
+      
+        public IEnumerable<OutProductDTO> Filter(DateTime dateOne, DateTime dateTwo)
+        {
+            var product = _context.Products.Where(
+                 x => x.CreatedAt > dateOne && x.CreatedAt < dateTwo).OrderBy(x=> x.Name)
+                 .ToList();
+
+            return _mapper.Map<List<OutProductDTO>>(product);
         }
 
         // GET: api/Products/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet("{id}")]
         public async Task<ActionResult<OutProductDTO>> GetProduct(int id)
         {
@@ -54,10 +65,13 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // PUT: api/Products/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, InProductDTO inProductDTO)
+        public async Task<IActionResult> PutProduct(int id, OutProductDTO outProductDTO)
         {
-            var product = _mapper.Map<Product>(inProductDTO);
+            var product = _mapper.Map<Product>(outProductDTO);
+            product.Category = await _context.Categories.FindAsync(product.CategoryId);
+            product.UpdatedAt = DateTime.Now;
             if (id != product.Id)
             {
                 return BadRequest();
@@ -85,10 +99,13 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // POST: api/Products
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<OutProductDTO>> PostProduct(InProductDTO inProductDTO)
         {
             var product = _mapper.Map<Product>(inProductDTO);
+            product.CreatedAt = DateTime.Now;
+            product.UpdatedAt = DateTime.Now;
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
@@ -96,6 +113,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // DELETE: api/Products/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<OutProductDTO>> DeleteProduct(int id)
         {

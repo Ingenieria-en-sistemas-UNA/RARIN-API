@@ -5,12 +5,17 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+<<<<<<< HEAD
+=======
+using Microsoft.AspNetCore.Cors;
+>>>>>>> f2a3a4595675d38487649a02402b6808f973bdb5
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rarin_Technologies_API.Abstraction;
 
 namespace Rarin_Technologies_API.Controllers
 {
+    [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class PdfsController : ControllerBase
@@ -23,6 +28,7 @@ namespace Rarin_Technologies_API.Controllers
             _reportService = reportService;
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet("Create")]
         public async Task<IActionResult> CreatePdf()
         {
