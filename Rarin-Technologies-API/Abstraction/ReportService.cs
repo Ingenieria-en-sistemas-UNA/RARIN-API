@@ -128,7 +128,7 @@ namespace Rarin_Technologies_API.Abstraction
 
         public async Task<byte[]> CreateShoppingCarReport()
         {
-            var shoppingCar = await _context.Products.ToListAsync();
+            var shoppingCar = await _context.ShoppingCars.ToListAsync();
             var templatePath = Path.GetFullPath("~/Templates/ReporteShoppingCars.cshtml").Replace("~\\", "");
             string template = await _razorEngine.CompileRenderAsync(templatePath, shoppingCar);
 
@@ -148,11 +148,11 @@ namespace Rarin_Technologies_API.Abstraction
 
      
 
-        public async Task<byte[]> CreateUsersReport()
+        public async Task<byte[]> CreatePersonReport()
         {
-            var users = await _context.Products.ToListAsync();
+            var person = await _context.Users.ToListAsync();
             var templatePath = Path.GetFullPath("~/Templates/ReporteUsuario.cshtml").Replace("~\\", "");
-            string template = await _razorEngine.CompileRenderAsync(templatePath, users);
+            string template = await _razorEngine.CompileRenderAsync(templatePath, person);
 
             _globalSettings.DocumentTitle = "Reporte de Usuarios";
             _objectSettings.HtmlContent = template;
@@ -170,9 +170,31 @@ namespace Rarin_Technologies_API.Abstraction
 
         public async Task<byte[]> CreateVoucherReport()
         {
-            var vouchers = await _context.Products.ToListAsync();
+            var vouchers = await _context.Vouchers.ToListAsync();
             var templatePath = Path.GetFullPath("~/Templates/ReporteVoucher.cshtml").Replace("~\\", "");
             string template = await _razorEngine.CompileRenderAsync(templatePath, vouchers);
+
+            _globalSettings.DocumentTitle = "Reporte de Vouchers";
+            _objectSettings.HtmlContent = template;
+
+            var pdf = new HtmlToPdfDocument()
+            {
+                GlobalSettings = _globalSettings,
+                Objects = { _objectSettings }
+            };
+
+            byte[] file = _pdfConverter.Convert(pdf);
+
+            return file;
+        }
+
+        
+
+        public async Task<byte[]> CreateVoucherPdfByController(int id)
+        {
+            var voucher = await _context.Vouchers.FindAsync(id);
+            var templatePath = Path.GetFullPath("~/Templates/VoucherPdfBy.cshtml").Replace("~\\", "");
+            string template = await _razorEngine.CompileRenderAsync(templatePath, voucher);
 
             _globalSettings.DocumentTitle = "Reporte de Vouchers";
             _objectSettings.HtmlContent = template;

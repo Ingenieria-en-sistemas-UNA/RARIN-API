@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Rarin_Technologies_API.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Initiial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

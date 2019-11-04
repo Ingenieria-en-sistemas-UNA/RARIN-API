@@ -1,4 +1,4 @@
-﻿<Rarin_Technologies_API.Entities.Product>
+﻿<Rarin_Technologies_API.Entities.Voucher>
 
     <html>
 
@@ -50,11 +50,11 @@
     <body>
         <div class="col-8 row">
 
-            <div class="col-8 text-center">Reporte de Producto</div>
+            <div class="col-8 text-center">Reporte de Factura Personal</div>
         </div>
         <table>
 
-            @foreach (var product in Model)
+            @foreach (var item in Model)
             {
 
                 <div style="overflow-x:initial;">
@@ -66,23 +66,20 @@
 
                     <tr>
                         <th>  <span>Id :</span></th>
-                        <th> <span>Nombre:</span></th>
-                        <th> <span>Precio:</span></th>
-                        <th> <span>Categoria:</span></th>
+                        <th>  <span>Id de Producto :</span></th>
+                        <th>  <span>Cantidad :</span></th>
                     </tr>
 
                 </div>
                 <div>
                     <tr>
-                        <td> <span class="car-name">@product.Id</span></td>
-
-                        <td> <span class="car-name">@product.Name</span></td>
-
-                        <td><span class="car-registration">@product.Price</span></td>
-                        <td> <span class="car-name">@product.Category</span></td>
-
-
+                        <td> <span class="car-name">@item.Id</span></td>
+                        <td> <span class="car-name">@item.ProductId</span></td>
+                        <td> <span class="car-name">@item.ProductId</span></td>
                     </tr>
+                </div>
+                <div>
+                    <span>Items</span>
                 </div>
 
                 <br />

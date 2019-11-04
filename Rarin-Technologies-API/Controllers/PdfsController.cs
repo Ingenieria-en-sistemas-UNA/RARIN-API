@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rarin_Technologies_API.Abstraction;
@@ -13,6 +16,7 @@ namespace Rarin_Technologies_API.Controllers
     public class PdfsController : ControllerBase
     {
         private readonly IReportService _reportService;
+        private object _pdfService;
 
         public PdfsController(IReportService reportService)
         {
@@ -50,9 +54,9 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         [HttpGet("User")]/**/
-        public async Task<IActionResult> pdfUsers()
+        public async Task<IActionResult> pdfUser()
         {
-            var file = await _reportService.CreateUsersReport();
+            var file = await _reportService.CreatePersonReport();
             return File(file, "application/pdf");
         }
         [HttpGet("Voucher")]
@@ -60,6 +64,14 @@ namespace Rarin_Technologies_API.Controllers
         {
             var file = await _reportService.CreateVoucherReport();
             return File(file, "application/pdf");
+        }
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
+        [HttpGet("create/vouchers/{id}")]
+        public async Task<IActionResult> createVoucherById(int id)
+        {
+            var file = await _reportService.CreateVoucherPdfByController(id);
+            return File(file, "application/pdf");
+           
         }
     }
 

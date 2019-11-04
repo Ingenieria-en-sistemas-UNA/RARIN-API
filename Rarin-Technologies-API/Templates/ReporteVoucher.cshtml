@@ -52,38 +52,55 @@
 
             <div class="col-8 text-center">Reporte de Factura</div>
         </div>
-        <table>
+        <div>
 
-            @foreach (var voucher in Model)
-            {
+            <table>
 
-                <div style="overflow-x:initial;">
+                @foreach (var voucher in Model)
+                {
+
+                    <div style="overflow-x:initial;">
 
 
-                </div>
+                    </div>
 
-                <div>
+                    <div>
 
-                    <tr>
-                        <th>  <span>Id :</span></th>
-                        <th> <span>Producto:</span></th>
-                        <th> <span>Cliente:</span></th>
-                        <th> <span>Detalle:</span></th>
-                    </tr>
+                        <tr>
+                            <th>  <span>Items :</span></th>
 
-                </div>
-                <div>
-                    <tr>
-                        <td> <span class="car-name">@voucher.Id</span></td>
-                        <td> <span class="car-name">@voucher.Products</span></td>
-                        <td> <span class="car-name">@voucher.Client</span></td>
-                        <td>  <span class="car-registration">@voucher.Detail</span></td>
-                    </tr>
-                </div>
 
-                <br />
-            }
-        </table>
-    </body>
+                        </tr>
+
+                    </div>
+                    <div>
+                        <tr>
+                            <td><span class="Total">Su total:</td>
+                            <td> <span class="Total item"></td>
+
+                        </tr>
+                    </div>
+                    <div>
+                        <tr>
+                            <td> <span class="car-name">@voucher.Items</span></td>
+
+                        </tr>
+                    </div>
+
+                    <div> <strong> <span>Id :</span></strong></div>
+                    <span class="car-name">@voucher.Id</span>
+
+                    <div> <strong><span>Id Cliente :</span></strong></div>
+                    <span class="car-name">@voucher.ClientId</span>
+
+
+                    <div> <strong><span>Detalle:</span> </strong></div>
+                    <span class="car-registration">@voucher.Detail</span>
+                    <br />
+                }
+            </table>
+
+</body>
+
 </html>
 

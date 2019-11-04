@@ -55,7 +55,7 @@
 
                 <div class="col-8 text-center">Reporte de Usuario</div>
             </div>
-            @foreach (var user in Model)
+            @foreach (var person in Model)
             {
 
                 <div style="overflow-x:initial;">
@@ -74,10 +74,10 @@
                 </div>
                 <div>
                     <tr>
-                        <td> <span class="car-name">@user.Id</span></td>
-                        <td> <span class="car-name">@user.Name</span></td>
+                        <td> <span class="car-name">@person.Id</span></td>
+                        <td> <span class="car-registration">@person.Name</span></td>
 
-                        <td>  <span class="car-registration">@user.LastName</span></td>
+                        <td>  <span class="car-name">@person.LastName</span></td>
                     </tr>
                 </div>
 

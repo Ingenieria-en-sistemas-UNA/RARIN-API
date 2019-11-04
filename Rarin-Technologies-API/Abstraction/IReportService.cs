@@ -10,7 +10,10 @@ namespace Rarin_Technologies_API.Abstraction
         Task<byte[]> CreateProductReport();
         Task<byte[]> CreateClienteReport();
         Task<byte[]> CreateVoucherReport();
-        Task<byte[]> CreateUsersReport();
+        Task<byte[]> CreatePersonReport();
         Task <byte[]>CreateShoppingCarReport();
+       Task<byte[]> CreateVoucherPdfByController(int id);
+       // Task<byte[]> CreateVoucherPdfByController();
+       // Task CreateVoucherPdfByController(int id);
     }
 }
