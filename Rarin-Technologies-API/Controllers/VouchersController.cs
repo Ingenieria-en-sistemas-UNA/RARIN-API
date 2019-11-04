@@ -29,6 +29,15 @@ namespace Rarin_Technologies_API.Controllers
             _context = context;
             this._mapper = mapper;
         }
+        [HttpGet("{dateOne},{dateTwo}")]
+        public IEnumerable<OutVoucherDTO> VoucherFilter(DateTime dateOne, DateTime dateTwo)
+        {
+            var voucher = _context.Vouchers.Where(
+                 x => x.CreatedAt > dateOne && x.CreatedAt < dateTwo).OrderBy(x => x.CreatedAt)
+                 .ToList();
+
+            return _mapper.Map<List<OutVoucherDTO>>(voucher);
+        }
 
         // GET: api/Vouchers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
