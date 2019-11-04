@@ -65,6 +65,7 @@ namespace Rarin_Technologies_API
             });
 
             services.AddDbContext<Contexts.ApplicationDbContext>(options =>
+
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                .AddJsonOptions(options =>
@@ -103,9 +104,17 @@ namespace Rarin_Technologies_API
             var context = new CustomAssemblyLoadContext();
             context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), $"PDFNative\\{processSuffix}\\libwkhtmltox.dll"));
 
-            services.AddScoped<IPDFService, PDFService>();
+            services.AddScoped<IReportService, ReportService>();
+
+            /**/
+          
+
         }
 
+        /// <summary>
+       
+        /// </summary>
+        /// <returns></returns>
         private XPathDocument filePath()
         {
             throw new NotImplementedException();

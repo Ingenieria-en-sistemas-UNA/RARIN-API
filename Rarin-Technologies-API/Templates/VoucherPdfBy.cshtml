@@ -1,0 +1,90 @@
+﻿<Rarin_Technologies_API.Entities.Voucher>
+
+    <html>
+
+    <head>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <style>
+            body {
+                font-family: Arial;
+            }
+
+            .col-8 {
+                margin: auto;
+            }
+
+            table {
+                margin: auto;
+                background-color: #458ace;
+                text-align: left;
+                border-collapse: collapse;
+                width: 80%;
+            }
+
+
+            th, td {
+                padding: 20px;
+            }
+
+            thead {
+                background-color: #808080;
+                border-bottom: solid 5px #0F362D;
+                color: white;
+            }
+
+            tr:nth-child(even) {
+                background-color: #ddd;
+            }
+
+
+            tr:hover td {
+                background-color: #369681;
+                color: white;
+            }
+        </style>
+
+    </head>
+
+    <body>
+        <div class="col-8 row">
+
+            <div class="col-8 text-center">Reporte de Factura Personal</div>
+        </div>
+        <table>
+
+            @foreach (var item in Model)
+            {
+
+                <div style="overflow-x:initial;">
+
+
+                </div>
+
+                <div>
+
+                    <tr>
+                        <th>  <span>Id :</span></th>
+                        <th>  <span>Id de Producto :</span></th>
+                        <th>  <span>Cantidad :</span></th>
+                    </tr>
+
+                </div>
+                <div>
+                    <tr>
+                        <td> <span class="car-name">@item.Id</span></td>
+                        <td> <span class="car-name">@item.ProductId</span></td>
+                        <td> <span class="car-name">@item.ProductId</span></td>
+                    </tr>
+                </div>
+                <div>
+                    <span>Items</span>
+                </div>
+
+                <br />
+            }
+        </table>
+    </body>
+</html>
+
