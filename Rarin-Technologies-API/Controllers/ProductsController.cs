@@ -38,6 +38,16 @@ namespace Rarin_Technologies_API.Controllers
             var products = await _context.Products.ToListAsync();
             return _mapper.Map<List<OutProductDTO>>(products);
         }
+        [HttpGet("{dateOne},{dateTwo}")]
+      
+        public IEnumerable<OutProductDTO> Filter(DateTime dateOne, DateTime dateTwo)
+        {
+            var product = _context.Products.Where(
+                 x => x.CreatedAt > dateOne && x.CreatedAt < dateTwo).OrderBy(x=> x.Name)
+                 .ToList();
+
+            return _mapper.Map<List<OutProductDTO>>(product);
+        }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
