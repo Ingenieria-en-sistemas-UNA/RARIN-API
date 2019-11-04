@@ -8,7 +8,6 @@ namespace Rarin_Technologies_API.Models
 {
     public class InClientDTO
     {
-        public Person Person { get; set; }
-        public InShoppingCarDTO ShoppingCar { get; set; }
+        public InPersonDTO Person { get; set; }
     }
 }

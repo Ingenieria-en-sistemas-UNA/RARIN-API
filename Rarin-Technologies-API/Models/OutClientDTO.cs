@@ -9,7 +9,6 @@ namespace Rarin_Technologies_API.Models
     public class OutClientDTO
     {
         public int Id { get; set; }
-        public OutShoppingCarDTO ShoppingCar { get; set; }
         public List<OutVoucherDTO> Vouchers { get; set; }
         public Person Person { get; set; }
     }

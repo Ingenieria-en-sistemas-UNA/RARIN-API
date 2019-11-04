@@ -176,14 +176,9 @@ namespace Rarin_Technologies_API
                     {
                         Person = new Person
                         {
-                            Id = "000000000",
+                            IdPerson = "000000000",
                             Name = "Rarin",
                             LastName = "Administrator"
-                        },
-                        PersonId = "000000000",
-                        ShoppingCar = new ShoppingCar
-                        {
-                            Products = new List<Product>()
                         },
                         Vouchers = new List<Voucher>()
                     }

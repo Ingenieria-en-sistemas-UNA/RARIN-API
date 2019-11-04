@@ -19,6 +19,7 @@ namespace Rarin_Technologies_API.Mapping
             CreateMap<Client, InClientDTO>();
             CreateMap<Voucher, InVoucherDTO>();
             CreateMap<Item, InItemDTO>();
+            CreateMap<Person, InPersonDTO>();
 
             CreateMap<Category, OutCategoryDTO>();
             CreateMap<Product, OutProductDTO>();

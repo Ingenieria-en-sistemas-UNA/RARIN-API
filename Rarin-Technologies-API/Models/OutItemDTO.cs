@@ -8,6 +8,7 @@ namespace Rarin_Technologies_API.Models
     public class OutItemDTO
     {
         public int Id { get; set; }
+        public int ProductId { get; set; }
         public OutProductDTO Product { get; set; }
         public int Cant { get; set; }
     }

@@ -40,7 +40,9 @@ namespace Rarin_Technologies_API.Migrations
                 name: "People",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IdPerson = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true)
                 },
@@ -88,8 +90,7 @@ namespace Rarin_Technologies_API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PersonId = table.Column<string>(nullable: true),
-                    ShoppingCarId = table.Column<int>(nullable: false)
+                    PersonId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,12 +99,6 @@ namespace Rarin_Technologies_API.Migrations
                         name: "FK_Clients_People_PersonId",
                         column: x => x.PersonId,
                         principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Clients_ShoppingCars_ShoppingCarId",
-                        column: x => x.ShoppingCarId,
-                        principalTable: "ShoppingCars",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -354,11 +349,6 @@ namespace Rarin_Technologies_API.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clients_ShoppingCarId",
-                table: "Clients",
-                column: "ShoppingCarId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Items_ProductId",
                 table: "Items",
                 column: "ProductId");
@@ -420,13 +410,13 @@ namespace Rarin_Technologies_API.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
+                name: "ShoppingCars");
+
+            migrationBuilder.DropTable(
                 name: "Clients");
 
             migrationBuilder.DropTable(
                 name: "People");
-
-            migrationBuilder.DropTable(
-                name: "ShoppingCars");
         }
     }
 }

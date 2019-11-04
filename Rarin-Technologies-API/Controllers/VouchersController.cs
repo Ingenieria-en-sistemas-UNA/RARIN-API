@@ -31,16 +31,31 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // GET: api/Vouchers
+        [EnableCors("AllowOrigin")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OutVoucherDTO>>> GetVouchers()
         {
-            var vouchers = await _context.Vouchers.ToListAsync();
+            var vouchers = await _context.Vouchers.Include(x => x.Client).ThenInclude(x=> x.Person).Include(x => x.Items).ToListAsync();
+            
+            vouchers.ForEach(voucher =>
+            {
+                List<Item> items = new List<Item>();
+                voucher.Items.ForEach((item) =>
+                {
+                    item.Product = _context.Products.Find(item.ProductId);
+                    items.Add(item);
+                });
+                voucher.Items = items;
+            });
+
+
 
             return _mapper.Map<List<OutVoucherDTO>>(vouchers);
         }
 
         // GET: api/Vouchers/5
+        [EnableCors("AllowOrigin")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpGet("{id}")]
         public async Task<ActionResult<OutVoucherDTO>> GetVoucher(int id)
@@ -56,6 +71,7 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // PUT: api/Vouchers/5
+        [EnableCors("AllowOrigin")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVoucher(int id, InVoucherDTO inVoucherDTO)
@@ -63,7 +79,7 @@ namespace Rarin_Technologies_API.Controllers
             var voucher = _mapper.Map<Voucher>(inVoucherDTO);
             //var client = await _context.Clients.FindAsync(voucher.ClientId);
             //   voucher.Client = client;
-   
+
             if (id != voucher.Id)
             {
                 return BadRequest();
@@ -91,19 +107,31 @@ namespace Rarin_Technologies_API.Controllers
         }
 
         // POST: api/Vouchers
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [EnableCors("AllowOrigin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
         [HttpPost]
         public async Task<ActionResult<OutVoucherDTO>> PostVoucher(InVoucherDTO inVoucherDTO)
         {
             var voucher = _mapper.Map<Voucher>(inVoucherDTO);
-            voucher.CreatedAt= DateTime.Now;
+            voucher.CreatedAt = DateTime.Now;
             _context.Vouchers.Add(voucher);
             await _context.SaveChangesAsync();
+
+            voucher.Client = await _context.Clients.FindAsync(voucher.ClientId);
+            voucher.Client.Person = await _context.People.FindAsync(voucher.Client.PersonId);
+            List<Item> items = new List<Item>();
+            voucher.Items.ForEach((item) =>
+            {
+                item.Product = _context.Products.Find(item.ProductId);
+                items.Add(item);
+            });
+            voucher.Items = items;
 
             return CreatedAtAction("GetVoucher", new { id = voucher.Id }, _mapper.Map<OutVoucherDTO>(voucher));
         }
 
         // DELETE: api/Vouchers/5
+        [EnableCors("AllowOrigin")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<OutVoucherDTO>> DeleteVoucher(int id)

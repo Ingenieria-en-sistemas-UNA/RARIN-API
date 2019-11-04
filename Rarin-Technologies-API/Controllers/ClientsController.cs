@@ -18,7 +18,7 @@ namespace Rarin_Technologies_API.Controllers
 {
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
     [ApiController]
     public class ClientsController : ControllerBase
     {
@@ -35,7 +35,7 @@ namespace Rarin_Technologies_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OutClientDTO>>> GetClients()
         {
-            var clients = await _context.Clients.ToListAsync();
+            var clients = await _context.Clients.Include(x => x.Person).ToListAsync();
             return _mapper.Map<List<OutClientDTO>>(clients);
 
         }
@@ -45,7 +45,7 @@ namespace Rarin_Technologies_API.Controllers
         public async Task<ActionResult<OutClientDTO>> GetClient(int id)
         {
             var client = await _context.Clients.FindAsync(id);
-
+            client.Person = await _context.People.FindAsync(client.PersonId);
 
             if (client == null)
             {

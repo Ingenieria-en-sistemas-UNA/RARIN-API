@@ -10,7 +10,7 @@ using Rarin_Technologies_API.Contexts;
 namespace Rarin_Technologies_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191103230620_Initial")]
+    [Migration("20191104041243_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -207,15 +207,11 @@ namespace Rarin_Technologies_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("PersonId");
-
-                    b.Property<int>("ShoppingCarId");
+                    b.Property<int>("PersonId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PersonId");
-
-                    b.HasIndex("ShoppingCarId");
 
                     b.ToTable("Clients");
                 });
@@ -243,7 +239,12 @@ namespace Rarin_Technologies_API.Migrations
 
             modelBuilder.Entity("Rarin_Technologies_API.Entities.Person", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("IdPerson");
 
                     b.Property<string>("LastName");
 
@@ -370,11 +371,7 @@ namespace Rarin_Technologies_API.Migrations
                 {
                     b.HasOne("Rarin_Technologies_API.Entities.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId");
-
-                    b.HasOne("Rarin_Technologies_API.Entities.ShoppingCar", "ShoppingCar")
-                        .WithMany()
-                        .HasForeignKey("ShoppingCarId")
+                        .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
