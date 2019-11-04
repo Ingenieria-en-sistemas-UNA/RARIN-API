@@ -10,7 +10,7 @@ using Rarin_Technologies_API.Contexts;
 namespace Rarin_Technologies_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191102031444_Initial")]
+    [Migration("20191103230620_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,6 +301,8 @@ namespace Rarin_Technologies_API.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ClientId");
+
+                    b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Detail");
 

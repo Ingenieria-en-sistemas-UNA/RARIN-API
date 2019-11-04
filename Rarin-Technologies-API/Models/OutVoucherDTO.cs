@@ -9,6 +9,7 @@ namespace Rarin_Technologies_API.Models
     public class OutVoucherDTO
     {
         public OutClientDTO Client { get; set; }
-        public List<OutProductDTO> Products { get; set; }
+        public List<OutItemDTO> Items { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
