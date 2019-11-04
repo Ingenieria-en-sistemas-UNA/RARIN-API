@@ -50,8 +50,7 @@ namespace Rarin_Technologies_API.Controllers
             return _mapper.Map<List<OutProductDTO>>(product);
         }
         */
-        [Route("FilterById")]
-        [HttpGet("{id}")]
+        [HttpGet("byCategory/{id}")]
         public IEnumerable<OutProductDTO> FilterById(int id)
         {
             var products = _context.Products.Where(
@@ -61,8 +60,7 @@ namespace Rarin_Technologies_API.Controllers
             return _mapper.Map<List<OutProductDTO>>(products);
         }
 
-        [Route("FilterByName")]
-        [HttpGet("{text}")]
+        [HttpGet("byText/{text}")]
         public IEnumerable<OutProductDTO> FilterByName(string text)
         {
             var products = _context.Products
