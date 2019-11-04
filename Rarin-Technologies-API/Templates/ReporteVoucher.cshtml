@@ -1,4 +1,4 @@
-﻿<Rarin_Technologies_API.Entities.Voucher>
+﻿@model Rarin_Technologies_API.Entities.Voucher
 
     <html>
 
@@ -55,51 +55,42 @@
         <div>
 
             <table>
+                <div>
 
-                @foreach (var voucher in Model)
+                    <tr>
+                        <th>  <span>Producto:</span></th>
+                        <th> <span>Cantidad:</span></th>
+                        <th> <span>Precio:</span></th>
+                    </tr>
+
+                </div>
+                @foreach (var item in Model.Items)
                 {
 
-                    <div style="overflow-x:initial;">
-
-
-                    </div>
 
                     <div>
-
                         <tr>
-                            <th>  <span>Items :</span></th>
-
-
-                        </tr>
-
-                    </div>
-                    <div>
-                        <tr>
-                            <td><span class="Total">Su total:</td>
-                            <td> <span class="Total item"></td>
-
-                        </tr>
-                    </div>
-                    <div>
-                        <tr>
-                            <td> <span class="car-name">@voucher.Items</span></td>
-
+                            <td> <span class="car-name">@item.Product.Name</span></td>
+                            <td> <span class="car-name">@item.Cant</span></td>
+                            <td> <span class="car-name">$@item.Product.Price</span></td>
                         </tr>
                     </div>
 
-                    <div> <strong> <span>Id :</span></strong></div>
-                    <span class="car-name">@voucher.Id</span>
-
-                    <div> <strong><span>Id Cliente :</span></strong></div>
-                    <span class="car-name">@voucher.ClientId</span>
-
-
-                    <div> <strong><span>Detalle:</span> </strong></div>
-                    <span class="car-registration">@voucher.Detail</span>
                     <br />
                 }
             </table>
+            <div> <strong> <span>Id :</span></strong></div>
+            <span class="car-name">@Model.Client.Person.IdPerson</span>
 
+            <div> <strong><span>Cliente :</span></strong></div>
+            <span class="car-name">@Model.Client.Person.Name</span>
+            
+            <div> <strong><span>Fecha :</span></strong></div>
+            <span class="car-name">@Model.CreatedAt.ToString("MM/dd/yyyy HH:mm:ss")</span>
+
+            <div> <strong><span>Detalle:</span> </strong></div>
+            <span class="car-registration">@Model.Detail</span>
+            <br />
 </body>
 
 </html>

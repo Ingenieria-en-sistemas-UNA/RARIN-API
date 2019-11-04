@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Rarin_Technologies_API.Contexts;
+using Rarin_Technologies_API.Entities;
 using RazorLight;
 
 namespace Rarin_Technologies_API.Abstraction
@@ -88,7 +90,7 @@ namespace Rarin_Technologies_API.Abstraction
 
         public  async Task<byte[]> CreateClienteReport()
         {
-            var clients = await _context.Clients.ToListAsync();
+            var clients = await _context.Clients.Include(x => x.Person).ToListAsync();
             var templatePath = Path.GetFullPath("~/Templates/ReporteCliente.cshtml").Replace("~\\", "");
             string template = await _razorEngine.CompileRenderAsync(templatePath, clients);
 
@@ -108,7 +110,7 @@ namespace Rarin_Technologies_API.Abstraction
 
         public async Task<byte[]> CreateProductReport()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products.Include(x => x.Category).ToListAsync();
             var templatePath = Path.GetFullPath("~/Templates/ReporteProduct.cshtml").Replace("~\\", "");
             string template = await _razorEngine.CompileRenderAsync(templatePath, products);
 
@@ -170,8 +172,18 @@ namespace Rarin_Technologies_API.Abstraction
 
         public async Task<byte[]> CreateVoucherReport()
         {
-            var vouchers = await _context.Vouchers.ToListAsync();
-            var templatePath = Path.GetFullPath("~/Templates/ReporteVoucher.cshtml").Replace("~\\", "");
+            var vouchers = await _context.Vouchers.Include(x => x.Client).ThenInclude(x => x.Person).Include(x => x.Items).ToListAsync();
+            vouchers.ForEach(voucher =>
+            {
+                List<Item> items = new List<Item>();
+                voucher.Items.ForEach((item) =>
+                {
+                    item.Product = _context.Products.Find(item.ProductId);
+                    items.Add(item);
+                });
+                voucher.Items = items;
+            });
+            var templatePath = Path.GetFullPath("~/Templates/VoucherPdfBy.cshtml").Replace("~\\", "");
             string template = await _razorEngine.CompileRenderAsync(templatePath, vouchers);
 
             _globalSettings.DocumentTitle = "Reporte de Vouchers";
@@ -192,10 +204,17 @@ namespace Rarin_Technologies_API.Abstraction
 
         public async Task<byte[]> CreateVoucherPdfByController(int id)
         {
-            var voucher = await _context.Vouchers.FindAsync(id);
-            var templatePath = Path.GetFullPath("~/Templates/VoucherPdfBy.cshtml").Replace("~\\", "");
+            var voucher = await _context.Vouchers.Include(x => x.Client).ThenInclude(x =>x.Person).Include(x => x.Items).FirstOrDefaultAsync(i => i.Id == id);
+            List<Item> items = new List<Item>();
+            voucher.Items.ForEach((item) =>
+            {
+                item.Product = _context.Products.Find(item.ProductId);
+                items.Add(item);
+            });
+            voucher.Items = items;
+            var templatePath = Path.GetFullPath("~/Templates/ReporteVoucher.cshtml").Replace("~\\", "");
             string template = await _razorEngine.CompileRenderAsync(templatePath, voucher);
-
+            
             _globalSettings.DocumentTitle = "Reporte de Vouchers";
             _objectSettings.HtmlContent = template;
 

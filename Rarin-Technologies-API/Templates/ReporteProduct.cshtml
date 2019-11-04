@@ -1,93 +1,92 @@
-﻿<Rarin_Technologies_API.Entities.Product>
+﻿@model List<Rarin_Technologies_API.Entities.Product>
+<html>
 
-    <html>
-
-    <head>
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-        <style>
-            body {
-                font-family: Arial;
-            }
-
-            .col-8 {
-                margin: auto;
-            }
-
-            table {
-                margin: auto;
-                background-color: #458ace;
-                text-align: left;
-                border-collapse: collapse;
-                width: 80%;
-            }
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
-            th, td {
-                padding: 20px;
-            }
+    <style>
 
-            thead {
-                background-color: #808080;
-                border-bottom: solid 5px #0F362D;
-                color: white;
-            }
-
-            tr:nth-child(even) {
-                background-color: #ddd;
-            }
+        body {
+            font-family: Arial;
+        }
 
 
-            tr:hover td {
-                background-color: #369681;
-                color: white;
-            }
-        </style>
+        .col-8 {
+            margin: auto;
+        }
 
-    </head>
+        table {
+            margin: auto;
+            background-color: #458ace;
+            text-align: left;
+            border-collapse: collapse;
+            width: 80%;
+        }
 
-    <body>
-        <div class="col-8 row">
 
-            <div class="col-8 text-center">Reporte de Producto</div>
+        th, td {
+            padding: 20px;
+        }
+
+        thead {
+            background-color: #808080;
+            border-bottom: solid 5px #0F362D;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ddd;
+        }
+
+
+        tr:hover td {
+            background-color: #369681;
+            color: white;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="col-8 row">
+
+        <div class="col-8 text-center">Reporte de Productos</div>
+
+    </div>
+    <table>
+        <div style="overflow-x:initial;">
+
+
         </div>
-        <table>
 
-            @foreach (var product in Model)
-            {
+        <div>
 
-                <div style="overflow-x:initial;">
+            <tr>
+                <th>  <span>Id :</span></th>
+                <th> <span>Nombre:</span></th>
+                <th> <span>Precio:</span></th>
+                <th> <span>Categoria:</span></th>
+            </tr>
 
+        </div>
+        @foreach (var product in Model)
+        {
 
-                </div>
+            <div>
+                <tr>
+                    <td> <span class="car-name">@product.Id</span></td>
 
-                <div>
+                    <td> <span class="car-name">@product.Name</span></td>
 
-                    <tr>
-                        <th>  <span>Id :</span></th>
-                        <th> <span>Nombre:</span></th>
-                        <th> <span>Precio:</span></th>
-                        <th> <span>Categoria:</span></th>
-                    </tr>
+                    <td><span class="car-registration">$@product.Price</span></td>
+                    <td> <span class="car-name">@product.Category.Name</span></td>
+                </tr>
+            </div>
 
-                </div>
-                <div>
-                    <tr>
-                        <td> <span class="car-name">@product.Id</span></td>
-
-                        <td> <span class="car-name">@product.Name</span></td>
-
-                        <td><span class="car-registration">@product.Price</span></td>
-                        <td> <span class="car-name">@product.Category</span></td>
-
-
-                    </tr>
-                </div>
-
-                <br />
-            }
-        </table>
-    </body>
+            <br />
+        }
+    </table>
+</body>
 </html>
 

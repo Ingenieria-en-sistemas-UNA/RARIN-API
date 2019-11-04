@@ -1,4 +1,4 @@
-﻿<Rarin_Technologies_API.Entities.Voucher>
+﻿@model List<Rarin_Technologies_API.Entities.Voucher>
 
     <html>
 
@@ -50,41 +50,39 @@
     <body>
         <div class="col-8 row">
 
-            <div class="col-8 text-center">Reporte de Factura Personal</div>
+            <div class="col-8 text-center">Reporte de Facturas</div>
         </div>
         <table>
+            <div>
 
-            @foreach (var item in Model)
+                <tr>
+                    <th>  <span>Id:</span></th>
+                    <th>  <span>Nombre:</span></th>
+                    <th>  <span>Fecha:</span></th>
+                    <th>  <span>Total:</span></th>
+                </tr>
+
+            </div>
+            @{double globalTotal = 0.0;}
+            @foreach (var voucher in Model)
             {
-
-                <div style="overflow-x:initial;">
-
-
-                </div>
-
-                <div>
-
-                    <tr>
-                        <th>  <span>Id :</span></th>
-                        <th>  <span>Id de Producto :</span></th>
-                        <th>  <span>Cantidad :</span></th>
-                    </tr>
-
-                </div>
                 <div>
                     <tr>
-                        <td> <span class="car-name">@item.Id</span></td>
-                        <td> <span class="car-name">@item.ProductId</span></td>
-                        <td> <span class="car-name">@item.ProductId</span></td>
+                        <td> <span class="car-name">@voucher.Client.Person.IdPerson</span></td>
+                        <td> <span class="car-name">@voucher.Client.Person.Name</span></td>
+                        <td> <span class="car-name">@voucher.CreatedAt.ToString("MM/dd/yyyy HH:mm:ss")</span></td>
+                        <td> <span class="car-name">$@voucher.Items.Sum(x =>
+                                                {
+                                                    globalTotal += x.Cant * x.Product.Price;
+                                                    return x.Cant * x.Product.Price;
+                                                })</span></td>
                     </tr>
                 </div>
-                <div>
-                    <span>Items</span>
-                </div>
-
                 <br />
             }
         </table>
+        <div> <strong> <span>Total:</span></strong></div>
+        <span class="car-name">@globalTotal</span>
     </body>
 </html>
 

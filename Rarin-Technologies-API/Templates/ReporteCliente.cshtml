@@ -53,34 +53,25 @@
             <div class="col-8 text-center">Reporte de Cliente</div>
         </div>
         <table>
+            <div style="overflow-x:initial;">
 
+
+            </div>
+
+            <div>
+
+                <tr>
+                    <th>  <span>Id :</span></th>
+                    <th> <span>Persona:</span></th>
+                </tr>
+
+            </div>
             @foreach (var client in Model)
             {
-
-
-                <div style="overflow-x:initial;">
-
-
-                </div>
-
-                <div>
-
-                    <tr>
-                        <th>  <span>Id :</span></th>
-                        <th> <span>Persona:</span></th>
-                        <th> <span>Id tarjeta de compra:</span></th>
-                        <th> <span>Factura:</span></th>
-                    </tr>
-
-                </div>
                 <div>
                     <tr>
-                        <td> <span class="car-name">@client.Id</span></td>
-                        <td>  <span class="car-registration">@client.Person</span></td>
-                        <td>  <span class="car-registration">@client.ShoppingCar</span></td>
-                        <td>  <span class="car-registration">@client.Vouchers</span></td>
-
-
+                        <td> <span class="car-name">@client.Person.IdPerson</span></td>
+                        <td>  <span class="car-registration">@client.Person.Name</span></td>
                     </tr>
                 </div>
 

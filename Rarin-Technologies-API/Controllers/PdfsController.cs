@@ -25,8 +25,8 @@ namespace Rarin_Technologies_API.Controllers
             _reportService = reportService;
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
-        [HttpGet("Create")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
+        [HttpGet("categories")]
         public async Task<IActionResult> CreatePdf()
         {
             var file = await _reportService.CreateCategoryReport();
@@ -69,7 +69,7 @@ namespace Rarin_Technologies_API.Controllers
             return File(file, "application/pdf");
         }
        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Member")]
-        [HttpGet("create/vouchers/{id}")]
+        [HttpGet("voucher/{id}")]
         public async Task<IActionResult> createVoucherById(int id)
         {
             var file = await _reportService.CreateVoucherPdfByController(id);
